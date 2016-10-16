@@ -17,12 +17,14 @@ import utility.*;
 
 
 public class Gestione {
+	//Limite di tempo per restituire un libro
 	private static final long tempoLimite = 86400000;
 	BibliotecaDao bdao=new BibliotecaDao();
 	UtenteDao udao=new UtenteDao();
 	LibroDao ldao=new LibroDao();
 	PrestitoDao pdao=new PrestitoDao();
 
+	//metodo per aggiungere una biblioteca al database
 	public boolean addBiblioteca(String nome){
 		Biblioteca b=new Biblioteca(nome);
 
@@ -30,6 +32,8 @@ public class Gestione {
 		return result;
 	}
 
+	//metodo per aggiungere un utente alla lista utenti di una biblioteca e al database. Lancia un'eccezione se l'utente
+	//Ë gi‡ registrato alla bilbioteca.
 	public boolean addUtente(Biblioteca b,String nome, String cognome, String codiceFiscale) throws UtenteGi‡Inserito {
 
 		for(Utente v : b.getUtenti()) {
@@ -48,6 +52,8 @@ public class Gestione {
 		return result;
 	}
 	
+	//metodo per aggiungere un libro alla lista libri della biblioteca e per aggiornarne il numero di copie
+	//Il serial number deve essere diverso da biblioteca a biblioteca
 	public boolean addLibro(Biblioteca b,String titolo, String autore, String serialNumber, int copie) {
 		
 		boolean result= false;
@@ -75,6 +81,10 @@ public class Gestione {
 		return result;
 	}
 	
+	//metodo per chiedere un prestito. Il prestito non viene concesso se:
+	//il libro non Ë presente in biblioteca o non ci sono copie disponibili;
+	//l'utente non Ë iscritto alla biblioteca o ha gi‡ tre prestiti attivi;
+	//l'utente ha un prestito scaduto
 	public boolean prestitoLibro(Biblioteca b, String codiceFiscale, String serialNumber) {
 		boolean result =false;
 		Map<String,Utente> utentiBib= utentiBiblioteca(b);
@@ -134,7 +144,8 @@ public class Gestione {
 		
 	}
 	
-	
+	//metodo per restituire un prestito. Controlla che il libro sia registrato in biblioteca, che sia presente
+	//nei prestiti dell'utente e che l'utente sia iscritto alla biblioteca
 	public boolean restituisciPrestito(Biblioteca b, String codiceFiscale, String serialNumber){
 		boolean result=false;
 		Map<String,Utente> utentiBib= utentiBiblioteca(b);

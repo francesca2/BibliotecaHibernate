@@ -130,5 +130,17 @@ public class GestioneTest {
 		assertEquals(u.getPrestitiUtente().size(),2);
 
 	}
+	
+	@Test
+	public void test_9_ChiediPrestitoDopoAverneRestituito() {
+		Gestione g=new Gestione();
+		BibliotecaDao bdao=new BibliotecaDao();
+
+		Biblioteca b=bdao.trovaBiblioteca("Calvino");
+
+		boolean result=g.prestitoLibro(b, "aa32jfhs9", "PZ345");
+		assertTrue(result);
+
+	}
 
 }
